@@ -1,0 +1,22 @@
+{
+  "name": "bamazon-cli",
+  "version": "1.0.0",
+  "description": "bamazon app that updates data using node and mysql",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lschmittling/bamazon-cli.git"
+  },
+  "author": "lschmittling",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lschmittling/bamazon-cli/issues"
+  },
+  "homepage": "https://github.com/lschmittling/bamazon-cli#readme",
+  "dependencies": {
+    "mysql": "^2.15.0"
+  }
+}
