@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/lschmittling/bamazon-cli#readme",
   "dependencies": {
+    "inquirer": "^5.2.0",
     "mysql": "^2.15.0"
   }
 }
