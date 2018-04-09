@@ -17,12 +17,12 @@ connection.query(queryString, function(err, rows, fields) {
     if (err) throw err;
  
     for (var i in rows) {
+        // console.log(rows);
         console.log("Product " + rows[i].id + ": " + rows[i].product_name);
     }
 });
  
 connection.end();
-
 
 // var start = function() {
 //     inquirer.prompt({
