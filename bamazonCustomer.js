@@ -1,40 +1,31 @@
 // Require the mysql database
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+// var cTable = require('console.table');
 
 var connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  database: "bamazon"
 });
 
 connection.connect(function(err) {
-    console.log("Connected as id: " + connection.threadId);
+  console.log("Connected as id: " + connection.threadId + "\n");
+  readProducts();
 });
 
-var queryString = "SELECT * FROM bamazon.products";
-
-connection.query(queryString, function(err, rows, fields) {
+// Read the products from the MySQL database
+function readProducts() {
+  connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
- 
-    for (var i in rows) {
-        // console.log(rows);
-        console.log("Product " + rows[i].id + ": " + rows[i].product_name);
+    console.log("---------------------------------------");
+    console.log("ITEMS FOR SALE");
+    console.log("---------------------------------------");
+    for (var i = 0; i < res.length; i++) {
+      console.log("ID: " + res[i].item_id + " | Item: " + res[i].product_name + " | Price: $" + res[i].price);
     }
-});
- 
-connection.end();
-
-// var start = function() {
-//     inquirer.prompt({
-//         name: "postOrBid",
-//         type: "rawlist",
-//         message: "Would you like to [POST] or [BID]?",
-//         choices: ["POST", "BID"]
-//     }).then(function(answer){
-//         if (answer.postOrBid.toUpperCase() == "POST") {
-//             console.log("success");
-//         } else {
-//             console.log("failure");
-//         }
-//     })
-// }
+    console.log("---------------------------------------\n")
+    connection.end();
+  });
+}
