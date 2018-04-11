@@ -19,13 +19,43 @@ connection.connect(function(err) {
 function readProducts() {
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
-    console.log("---------------------------------------");
+    console.log("--------------------------------------------");
     console.log("ITEMS FOR SALE");
-    console.log("---------------------------------------");
+    console.log("--------------------------------------------\n");
     for (var i = 0; i < res.length; i++) {
       console.log("ID: " + res[i].item_id + " | Item: " + res[i].product_name + " | Price: $" + res[i].price);
     }
-    console.log("---------------------------------------\n")
-    connection.end();
+    console.log("\n--------------------------------------------\n")
+    promptUser();
   });
+}
+
+function promptUser() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "id",
+            message: "What's the ID of the product you'd like to buy?"
+        },
+        {
+            type: "input",
+            name: "units",
+            message: "How many would you like to buy?"
+        }
+    ]).then(answers => {
+        var query = connection.query("SELECT * FROM products", function(err, res) {
+            if (err) throw err;
+            if (answers.units > res.stock_quantity) {
+                console.log("INSUFFICIENT QUANTITY!");
+                promptUser();
+            } else {
+                console.log(answers.id);
+                console.log(answers.units);
+                console.log(res.stock_quantity);
+                console.log("it worked");
+                console.log(query.sql);
+            }
+            connection.end();
+        });
+    });
 }
