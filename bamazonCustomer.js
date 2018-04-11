@@ -1,7 +1,7 @@
 // Require the mysql database
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-// var cTable = require('console.table');
+var Table = require("cli-table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -19,13 +19,21 @@ connection.connect(function(err) {
 function readProducts() {
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
-    console.log("--------------------------------------------");
-    console.log("ITEMS FOR SALE");
-    console.log("--------------------------------------------\n");
+    
+    var table = new Table({
+        head: ["Item ID", "Product", "Price"],
+        colWidths: [10, 20, 10],
+        style: {
+            head: ["green"],
+        }
+    });
+
     for (var i = 0; i < res.length; i++) {
-      console.log("ID: " + res[i].item_id + " | Item: " + res[i].product_name + " | Price: $" + res[i].price);
+        table.push(
+            [res[i].item_id, res[i].product_name, res[i].price]
+        );
     }
-    console.log("\n--------------------------------------------\n")
+    console.log(table.toString() + "\n");
     promptUser();
   });
 }
@@ -57,3 +65,13 @@ function promptUser() {
         });
     });
 }
+
+
+// console.log("--------------------------------------------");
+    // console.log("ITEMS FOR SALE");
+    // console.log("--------------------------------------------\n");
+    // for (var i = 0; i < res.length; i++) {
+    //   console.log("ID: " + res[i].item_id + " | Item: " + res[i].product_name + " | Price: $" + res[i].price);
+    // }
+    // console.log("\n--------------------------------------------\n")
+    // promptUser();
