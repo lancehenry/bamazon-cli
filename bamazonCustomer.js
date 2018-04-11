@@ -43,7 +43,7 @@ function promptUser() {
             message: "How many would you like to buy?"
         }
     ]).then(answers => {
-        var query = connection.query("SELECT * FROM products", function(err, res) {
+        connection.query("SELECT * FROM products WHERE item_id=?", ["answers.units"], function(err, res) {
             if (err) throw err;
             if (answers.units > res.stock_quantity) {
                 console.log("INSUFFICIENT QUANTITY!");
@@ -51,9 +51,7 @@ function promptUser() {
             } else {
                 console.log(answers.id);
                 console.log(answers.units);
-                console.log(res.stock_quantity);
                 console.log("it worked");
-                console.log(query.sql);
             }
             connection.end();
         });
