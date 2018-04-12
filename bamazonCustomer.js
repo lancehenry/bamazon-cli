@@ -50,14 +50,22 @@ function promptUser() {
     }
     ])
     .then(function(answers) {
-    	connection.query("SELECT * FROM Products WHERE item_id= " + answers.itemID, function(err, res) {
+    	connection.query("SELECT * FROM products WHERE item_id= " + answers.itemID, function(err, res) {
 			if (err) throw err;
 			if (answers.quantity <= res[0].stock_quantity) {
+
+        // Calculates Total price for amount of items purchased
 				var totalPrice = (parseInt(answers.quantity * res[0].price));
 				console.log("\n--------------------------------------------");
 				console.log("\nThank you for your purchase!\nYour total for " + answers.quantity + " items is $" + totalPrice + ".\n");
-				console.log("--------------------------------------------\n");
-				readProducts();
+        console.log("--------------------------------------------\n");
+
+        // Stored new quantity in a variable. This is the only way I got the query to update below.
+        var updateQuantity = (res[0].stock_quantity - answers.quantity);
+
+        // Updates MySql database with entered quantities
+        connection.query("UPDATE products SET stock_quantity=? WHERE item_id=?", [updateQuantity, answers.itemID]);
+        donePurchasing();
 			} else {
 				console.log("\n--------------------------------------------");
 				console.log("\nINSUFFICIENT QUANTITY!\n");
@@ -65,5 +73,26 @@ function promptUser() {
 				readProducts();
 			}
 		})
-    });
+  });
+}
+
+function donePurchasing() {
+  inquirer.prompt([
+    {
+      type: "list",
+      name: "finished",
+      message: "Are you done purchasing?",
+      choices: ["Yes", "No"]
+    }
+  ])
+  .then(function(answers) {
+    if (answers.finished === "No") {
+      readProducts();
+    } else {
+      console.log("\n--------------------------------------------");
+			console.log("\nCOME BACK SOON!\n");
+			console.log("--------------------------------------------\n");
+      connection.end();
+    }
+  }) 
 }
