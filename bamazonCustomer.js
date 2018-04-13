@@ -1,8 +1,9 @@
-// Require the mysql database
+// Require the MySQL database, inquirer, cli-table
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require("cli-table");
 
+// Make the database connection
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -11,7 +12,7 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
-  console.log("Connected as id: " + connection.threadId + "\n");
+  // console.log("Connected as id: " + connection.threadId + "\n");
   readProducts();
 });
 
@@ -63,7 +64,7 @@ function promptUser() {
         // Stored new quantity in a variable. This is the only way I got the query to update below.
         var updateQuantity = (res[0].stock_quantity - answers.quantity);
 
-        // Updates MySql database with entered quantities
+        // Updates MySQL database with entered quantities
         connection.query("UPDATE products SET stock_quantity=? WHERE item_id=?", [updateQuantity, answers.itemID]);
         donePurchasing();
 			} else {
