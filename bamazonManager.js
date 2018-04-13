@@ -16,6 +16,7 @@ connection.connect(function(err) {
   managerPrompt();
 });
 
+// Prompt user with choices they'd like to run
 function managerPrompt() {
   inquirer
     .prompt([
@@ -36,8 +37,7 @@ function managerPrompt() {
         viewProducts();
       }
       if (answers.managerOptions === "View Low Inventory") {
-        console.log("View Low Inventory");
-        connection.end();
+        lowInventory();
       }
       if (answers.managerOptions === "Add to Inventory") {
         addInventory();
@@ -74,8 +74,36 @@ function viewProducts() {
   });
 }
 
-// function lowInventory() {}
+// Function that checks for stock quantity less than 20 items
+function lowInventory() {
+  connection.query("SELECT * FROM products WHERE stock_quantity < 20", function(
+    err,
+    res
+  ) {
+    if (err) throw err;
 
+    // Using npm cli-table for table layout in console
+    var table = new Table({
+      head: ["Item ID", "Product", "Department", "Price", "Quantity"],
+      colWidths: [10, 20, 20, 10, 10]
+    });
+
+    // Loop through results and push them to the cli-table
+    for (var i = 0; i < res.length; i++) {
+      table.push([
+        res[i].item_id,
+        res[i].product_name,
+        res[i].department_name,
+        res[i].price,
+        res[i].stock_quantity
+      ]);
+    }
+    console.log(table.toString() + "\n");
+    managerPrompt();
+  });
+}
+
+// Add inventory to the specific item ID entered by the user
 function addInventory() {
   inquirer
     .prompt([
@@ -98,7 +126,6 @@ function addInventory() {
           // Calculates new quantity from users input
           var newQuantity =
             parseInt(answers.quantity) + parseInt(res[0].stock_quantity);
-          // console.log(newQuantity);
 
           // Updates MySQL database with users quantities
           connection.query(
@@ -116,12 +143,13 @@ function addInventory() {
               ". Please see updated table below!\n"
           );
           console.log("--------------------------------------------\n");
-          viewProducts();
+          managerPrompt();
         }
       );
     });
 }
 
+// Add a new product to the table
 function addProduct() {
   inquirer
     .prompt([
@@ -172,6 +200,6 @@ function addProduct() {
           console.log("--------------------------------------------\n");
         }
       );
-      viewProducts();
+      managerPrompt();
     });
 }
