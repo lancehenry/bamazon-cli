@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
-  console.log("Connected as id: " + connection.threadId + "\n");
+  // console.log("Connected as id: " + connection.threadId + "\n");
   managerPrompt();
 });
 
@@ -140,7 +140,7 @@ function addInventory() {
               answers.itemID +
               " \nhas been updated to " +
               newQuantity +
-              ". Please see updated table below!\n"
+              ". Select View Products for Sale to see results.\n"
           );
           console.log("--------------------------------------------\n");
           managerPrompt();
@@ -195,11 +195,11 @@ function addProduct() {
           console.log(
             "\nSUCCESS!\nYour product " +
               answers.productName +
-              " was added.\nPlease see updated table below.\n"
+              " was added.\nSelect View Products for Sale to see results.\n"
           );
           console.log("--------------------------------------------\n");
+          managerPrompt();
         }
       );
-      managerPrompt();
     });
 }
