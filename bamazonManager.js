@@ -43,8 +43,7 @@ function managerPrompt() {
         addInventory();
       }
       if (answers.managerOptions === "Add New Product") {
-        console.log("Add New Product");
-        connection.end();
+        addProduct();
       }
     });
 }
@@ -105,8 +104,40 @@ function addInventory() {
       console.log("\nSUCCESS!\nYour quantity of " + answers.quantity + " for product item ID " + answers.itemID + " \nhas been updated to " + newQuantity + ". Please see updated table below!\n");
   	  console.log("--------------------------------------------\n");
 			viewProducts();
-		})
-	})
+		});
+	});
 }
 
-// function addProduct() {}
+function addProduct() {
+	inquirer
+		.prompt([
+			{
+				type: "input",
+				name: "itemID",
+				message: "What is the 4-digit item ID?"
+			},
+			{
+				type: "input",
+				name: "productName",
+				message: "What is the product name?"
+			},
+			{
+				type: "input",
+				name: "deptName",
+				message: "What department should this product be in?"
+			},
+			{
+				type: "input",
+				name: "price",
+				message: "How much is your product?"
+			},
+			{
+				type: "input",
+				name: "quantity",
+				message: "How many do you have?"
+			}
+		])
+		.then(function(answers) {
+			connection.query("INSERT INTO products (item_id, product_name, department_name, price, stock_quantity) VALUES=?", [answers.itemID, answers.productName, answers.deptName, answers.price, answers.quantity]);
+		});
+}
