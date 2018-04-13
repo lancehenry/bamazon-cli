@@ -54,7 +54,7 @@ function viewProducts() {
     if (err) throw err;
 
     // Using npm cli-table for table layout in console
-    var table = new Table ({
+    var table = new Table({
       head: ["Item ID", "Product", "Department", "Price", "Quantity"],
       colWidths: [10, 20, 20, 10, 10]
     });
@@ -77,67 +77,90 @@ function viewProducts() {
 // function lowInventory() {}
 
 function addInventory() {
-	inquirer
-		.prompt([
-			{
-				type: "input",
-				name: "itemID",
-				message: "What's the ID of the product you'd like to add inventory to?"
-			},
-			{
-				type: "input",
-				name: "quantity",
-				message: "How many would you like to add?"
-			}
-		])
-		.then(function(answers) {
-			connection.query("SELECT * FROM products WHERE item_id= " + answers.itemID, function(err, res) {
-				if (err) throw err;
-				// Calculates new quantity from users input
-				var newQuantity = parseInt(answers.quantity) + parseInt(res[0].stock_quantity);
-				// console.log(newQuantity);
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "itemID",
+        message: "What's the ID of the product you'd like to add inventory to?"
+      },
+      {
+        type: "input",
+        name: "quantity",
+        message: "How many would you like to add?"
+      }
+    ])
+    .then(function(answers) {
+      connection.query(
+        "SELECT * FROM products WHERE item_id= " + answers.itemID,
+        function(err, res) {
+          if (err) throw err;
+          // Calculates new quantity from users input
+          var newQuantity =
+            parseInt(answers.quantity) + parseInt(res[0].stock_quantity);
+          // console.log(newQuantity);
 
-				// Updates MySQL database with users quantities
-				connection.query("UPDATE products SET stock_quantity=? WHERE item_id=?", [newQuantity, answers.itemID]
-			);
-			console.log("\n--------------------------------------------");
-      console.log("\nSUCCESS!\nYour quantity of " + answers.quantity + " for product item ID " + answers.itemID + " \nhas been updated to " + newQuantity + ". Please see updated table below!\n");
-  	  console.log("--------------------------------------------\n");
-			viewProducts();
-		});
-	});
+          // Updates MySQL database with users quantities
+          connection.query(
+            "UPDATE products SET stock_quantity=? WHERE item_id=?",
+            [newQuantity, answers.itemID]
+          );
+          console.log("\n--------------------------------------------");
+          console.log(
+            "\nSUCCESS!\nYour quantity of " +
+              answers.quantity +
+              " for product item ID " +
+              answers.itemID +
+              " \nhas been updated to " +
+              newQuantity +
+              ". Please see updated table below!\n"
+          );
+          console.log("--------------------------------------------\n");
+          viewProducts();
+        }
+      );
+    });
 }
 
 function addProduct() {
-	inquirer
-		.prompt([
-			{
-				type: "input",
-				name: "itemID",
-				message: "What is the 4-digit item ID?"
-			},
-			{
-				type: "input",
-				name: "productName",
-				message: "What is the product name?"
-			},
-			{
-				type: "input",
-				name: "deptName",
-				message: "What department should this product be in?"
-			},
-			{
-				type: "input",
-				name: "price",
-				message: "How much is your product?"
-			},
-			{
-				type: "input",
-				name: "quantity",
-				message: "How many do you have?"
-			}
-		])
-		.then(function(answers) {
-			connection.query("INSERT INTO products (item_id, product_name, department_name, price, stock_quantity) VALUES=?", [answers.itemID, answers.productName, answers.deptName, answers.price, answers.quantity]);
-		});
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "itemID",
+        message: "What is the 4-digit item ID?"
+      },
+      {
+        type: "input",
+        name: "productName",
+        message: "What is the product name?"
+      },
+      {
+        type: "input",
+        name: "deptName",
+        message: "What department should this product be in?"
+      },
+      {
+        type: "input",
+        name: "price",
+        message: "How much is your product?"
+      },
+      {
+        type: "input",
+        name: "quantity",
+        message: "How many do you have?"
+      }
+    ])
+    .then(function(answers) {
+      connection.query(
+        "INSERT INTO products (item_id, product_name, department_name, price, stock_quantity) VALUES=?",
+        [
+          answers.itemID,
+          answers.productName,
+          answers.deptName,
+          answers.price,
+          answers.quantity
+        ]
+      );
+    });
 }
