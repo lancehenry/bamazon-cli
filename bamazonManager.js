@@ -153,14 +153,25 @@ function addProduct() {
     ])
     .then(function(answers) {
       connection.query(
-        "INSERT INTO products (item_id, product_name, department_name, price, stock_quantity) VALUES=?",
-        [
-          answers.itemID,
-          answers.productName,
-          answers.deptName,
-          answers.price,
-          answers.quantity
-        ]
+        "INSERT INTO products SET ?",
+        {
+          item_id: answers.itemID,
+          product_name: answers.productName,
+          department_name: answers.deptName,
+          price: answers.price,
+          stock_quantity: answers.quantity
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("\n--------------------------------------------");
+          console.log(
+            "\nSUCCESS!\nYour product " +
+              answers.productName +
+              " was added.\nPlease see updated table below.\n"
+          );
+          console.log("--------------------------------------------\n");
+        }
       );
+      viewProducts();
     });
 }
