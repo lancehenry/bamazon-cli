@@ -12,30 +12,37 @@ Bamazon is an Amazon-like storefront using node and a MySQL database. The bamazo
 
 Philosophy
 ==========
-The concept is simple:
+Bamazon Customer:
 
-* The bamazonCustomer.js command line displays the products available for sale. The customer can enter the Item ID and Quantity. The app checks the database to ensure enough products exists and returns the total price. See below for a gif example:
+* Using the command line, the bamazonCustomer.js displays the products available for sale. The customer can enter the Item ID and Quantity. The app checks the database to ensure enough products exists and returns the total price.
 
-![alt text](https://github.com/lschmittling/bamazon-cli/blob/master/images/bamazonCust.gif "Logo Title Text 1")
+![alt text](https://github.com/lschmittling/bamazon-cli/blob/master/images/bamazonCust.gif "bamazonCustomer")
+
+Bamazon Manager:
+
+* Using the command line, the bamazonManager.js allows the Manageer full control of the products in their MySQL database. The Manager is able to achieve the following:
+
+  * View Products for Sale
+    * Displays all of the products for sale in a table.
+
+  * View Low Inventory
+    * This displays all of the products with less than 20 items (low inventory).
+
+![alt text](https://github.com/lschmittling/bamazon-cli/blob/master/images/bamazonMan1.gif "bamazonManager1")
   
-  * 'my-tweets'
-    * Returns the last 20 tweets from my account
-  
-  * 'spotify-this-song'
-    * Returns information for the title of the song entered
-    * If no song is entered, returns 'The Sign' by Ace of Base
-  
-  * 'movie-this'
-    * Returns information for the title of the movie entered
-    * If no song is entered, returns 'Mr. Nobody'
-  
-  * 'do-what-it-says'
-    * Reads the file random.txt and executes the command
+  * Add to Inventory
+    * Select the Item by ID and add product to the inventory.
+
+![alt text](https://github.com/lschmittling/bamazon-cli/blob/master/images/bamazonMan2.gif "bamazonManager1")
+
+  * Add New Product
+    * Add an item to the database.
+
+![alt text](https://github.com/lschmittling/bamazon-cli/blob/master/images/bamazonMan3.gif "bamazonManager1")
 
 Struggles
 =========
 Some of the challenges I encountered:
 
-* getting my tweets to only return the tweet and date
-* getting a callback from spotify after installing its npm
-* getting the if/else statement to return Ace of Base if no input
+* getting the functionality correct to subtract quantity from the specific ItemID
+* getting my 'INSERT' query correct for MySQL to add inventory
