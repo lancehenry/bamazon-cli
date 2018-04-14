@@ -14,7 +14,9 @@ Philosophy
 ==========
 The concept is simple:
 
-* The command line takes in one of the following commands:
+* The bamazonCustomer.js command line displays the products available for sale. The customer can enter the Item ID and Quantity. The app checks the database to ensure enough products exists and returns the total price. See below for a gif example:
+
+![alt text](https://github.com/lschmittling/bamazon-cli/blob/master/images/bamazonCust.gif "Logo Title Text 1")
   
   * 'my-tweets'
     * Returns the last 20 tweets from my account
